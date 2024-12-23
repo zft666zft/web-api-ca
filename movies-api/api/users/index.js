@@ -13,7 +13,7 @@ router.get('/', async (req, res) => {
     res.status(200).json(users);
 });
 
-// register(Create)/Authenticate User
+// Carry out register(Create) or Authenticate User(login)
 router.post('/', asyncHandler(async (req, res) => {
     try {
         if (!req.body.username || !req.body.password) {
@@ -44,12 +44,17 @@ router.put('/:id', async (req, res) => {
     }
 });
 
+
+//registration
 async function registerUser(req, res) {
     // Add input validation logic here
     await User.create(req.body);
     res.status(201).json({ success: true, msg: 'User successfully created.' });
 }
 
+
+
+//authentication(login)
 async function authenticateUser(req, res) {
     const user = await User.findByUserName(req.body.username);
     if (!user) {

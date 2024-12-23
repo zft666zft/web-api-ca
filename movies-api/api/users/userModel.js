@@ -17,6 +17,7 @@ UserSchema.statics.findByUserName = function (username) {
   return this.findOne({ username: username });
 };
 
+//对用户修改后密码进行加密并储存
 UserSchema.pre('save', async function(next) {
   const saltRounds = 10; // You can adjust the number of salt rounds
   //const user = this;

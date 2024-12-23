@@ -9,6 +9,7 @@ import {
 
 const router = express.Router();
 
+//Pagination
 router.get('/', asyncHandler(async (req, res) => {
     let { page = 1, limit = 10 } = req.query; // destructure page and limit and set default values
     [page, limit] = [+page, +limit]; //trick to convert to numeric (req.query will contain string values)
@@ -42,11 +43,13 @@ router.get('/:id', asyncHandler(async (req, res) => {
     }
 }));
 
+//Get upcoming movies
 router.get('/tmdb/upcoming', asyncHandler(async (req, res) => {
     const upcomingMovies = await getUpcomingMovies();
     res.status(200).json(upcomingMovies);
 }));
 
+//Get movie genres 
 router.get('/tmdb/genres', asyncHandler(async (req, res) => {
     const movieGenres = await getMovieGenres(); // 调用 TMDB API 获取电影类型
     res.status(200).json(movieGenres); // 返回 JSON 数据
