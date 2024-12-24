@@ -3,6 +3,9 @@ import fetch from 'node-fetch';
 const API_BASE_URL = 'https://api.themoviedb.org/3';
 const API_KEY = process.env.TMDB_KEY;
 
+
+//Movie
+
 // Fetch movies with pagination
 export const getMovies = async (page = 1) => {
     try {
@@ -179,21 +182,6 @@ export const getMovieCredits = async (movieId) => {
     }
 };
 
-// Fetch actor movies
-export const getActorMovies = async (actorId) => {
-    try {
-        const response = await fetch(
-            `${API_BASE_URL}/person/${actorId}/movie_credits?api_key=${API_KEY}`
-        );
-        if (!response.ok) {
-            const error = await response.json();
-            throw new Error(error.status_message || 'Failed to fetch actor movies.');
-        }
-        return await response.json();
-    } catch (error) {
-        throw error;
-    }
-};
 
 // Fetch hot movies
 export const getHotMovies = async (page = 1) => {
@@ -227,22 +215,6 @@ export const getTopRatedMovies = async (page = 1) => {
     }
 };
 
-// Fetch actor details
-export const getActorDetails = async (actorId) => {
-    try {
-        const response = await fetch(
-            `${API_BASE_URL}/person/${actorId}?api_key=${API_KEY}&language=en-US`
-        );
-        if (!response.ok) {
-            const error = await response.json();
-            throw new Error(error.status_message || 'Failed to fetch actor details.');
-        }
-        return await response.json();
-    } catch (error) {
-        throw error;
-    }
-};
-
 // Fetch movie videos
 export const getMovieVideos = async (movieId) => {
     try {
@@ -258,3 +230,9 @@ export const getMovieVideos = async (movieId) => {
         throw error;
     }
 };
+
+
+
+//Actor
+
+
