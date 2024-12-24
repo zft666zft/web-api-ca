@@ -163,6 +163,22 @@ export const getMovieCast = async (movieId) => {
     }
 };
 
+// Fetch movie credits (cast and crew)
+export const getMovieCredits = async (movieId) => {
+    try {
+        const response = await fetch(
+            `https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=${process.env.TMDB_KEY}`
+        );
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.status_message || "Failed to fetch movie credits.");
+        }
+        return await response.json();
+    } catch (error) {
+        throw error;
+    }
+};
+
 // Fetch actor movies
 export const getActorMovies = async (actorId) => {
     try {
@@ -204,22 +220,6 @@ export const getTopRatedMovies = async (page = 1) => {
         if (!response.ok) {
             const error = await response.json();
             throw new Error(error.status_message || 'Failed to fetch top-rated movies.');
-        }
-        return await response.json();
-    } catch (error) {
-        throw error;
-    }
-};
-
-// Fetch movie credits (cast and crew)
-export const getMovieCredits = async (movieId) => {
-    try {
-        const response = await fetch(
-            `https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=${process.env.TMDB_KEY}`
-        );
-        if (!response.ok) {
-            const error = await response.json();
-            throw new Error(error.status_message || "Failed to fetch movie credits.");
         }
         return await response.json();
     } catch (error) {
