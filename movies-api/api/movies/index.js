@@ -3,7 +3,7 @@ import asyncHandler from 'express-async-handler';
 import express from 'express';
 import {
     getUpcomingMovies,
-    getMovieGenres
+    getGenres
   } from '../tmdb-api';
   
 
@@ -51,8 +51,9 @@ router.get('/tmdb/upcoming', asyncHandler(async (req, res) => {
 
 //Get movie genres 
 router.get('/tmdb/genres', asyncHandler(async (req, res) => {
-    const movieGenres = await getMovieGenres(); // 调用 TMDB API 获取电影类型
-    res.status(200).json(movieGenres); // 返回 JSON 数据
+    const movieGenres = await getGenres(); 
+    res.status(200).json(movieGenres); 
 }));
 
 export default router;
+
