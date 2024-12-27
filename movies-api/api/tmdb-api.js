@@ -70,21 +70,7 @@ export const getMovieImages = async (id) => {
     }
 };
 
-// Fetch movie reviews
-export const getMovieReviews = async (id) => {
-    try {
-        const response = await fetch(
-            `${API_BASE_URL}/movie/${id}/reviews?api_key=${API_KEY}`
-        );
-        if (!response.ok) {
-            const error = await response.json();
-            throw new Error(error.status_message || 'Failed to fetch movie reviews.');
-        }
-        return await response.json();
-    } catch (error) {
-        throw error;
-    }
-};
+
 
 // Fetch upcoming movies
 export const getUpcomingMovies = async (page = 1) => {
@@ -325,6 +311,27 @@ export const getActorsByPopularityThreshold = async (popularity) => {
         if (!response.ok) {
             const error = await response.json();
             throw new Error(error.status_message || 'Failed to fetch actors by popularity threshold.');
+        }
+        return await response.json();
+    } catch (error) {
+        throw error;
+    }
+};
+
+
+
+
+//reviews
+
+// Fetch movie reviews
+export const getMovieReviews = async (id) => {
+    try {
+        const response = await fetch(
+            `${API_BASE_URL}/movie/${id}/reviews?api_key=${API_KEY}`
+        );
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.status_message || 'Failed to fetch movie reviews.');
         }
         return await response.json();
     } catch (error) {
