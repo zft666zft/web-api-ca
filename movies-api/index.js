@@ -13,11 +13,14 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT; 
 
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:3000', 
+  credentials: true, 
+}));
 app.use(express.json());
 app.use('/api/users', usersRouter);
-app.use('/api/movies', authenticate, moviesRouter);
-app.use('/api/reviews', authenticate,reviewsRouter);
+app.use('/api/movies', moviesRouter);
+app.use('/api/reviews',reviewsRouter);
 app.use(defaultErrHandler);
 
 app.listen(port, () => {
