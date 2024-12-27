@@ -9,10 +9,26 @@ export const getMovies = async (page = 1) => {
 
 // Fetch specific movie details
 export const getMovie = async (id) => {
-    const response = await fetch(`${BASE_URL}/movies/tmdb/movie/${id}`);
-    if (!response.ok) throw new Error('Failed to fetch movie details from backend');
-    return response.json();
+  if (typeof id !== "string" && typeof id !== "number") {
+      throw new Error(`Invalid ID type: ${typeof id}. Expected string or number.`);
+  }
+
+  const url = `${BASE_URL}/movies/tmdb/movie/${id}`;
+  console.log(`Fetching movie details from: ${url}`);
+  try {
+      const response = await fetch(url);
+      if (!response.ok) {
+          const error = await response.json();
+          throw new Error(error.message || "Failed to fetch movie details from backend");
+      }
+      return await response.json();
+  } catch (error) {
+      console.error("Error fetching movie details:", error.message);
+      throw error; 
+  }
 };
+
+
 
 // Fetch genres
 export const getGenres = async () => {
@@ -21,11 +37,30 @@ export const getGenres = async () => {
     return response.json();
 };
 
+
+// export const getMovieImages = async (id) => {
+//     const response = await fetch(`${BASE_URL}/movies/tmdb/movie/${id}/images`);
+//     if (!response.ok) throw new Error('Failed to fetch movie images from backend');
+//     return response.json();
+// };
+
 // Fetch movie images
-export const getMovieImages = async (id) => {
-    const response = await fetch(`${BASE_URL}/movies/tmdb/movie/${id}/images`);
-    if (!response.ok) throw new Error('Failed to fetch movie images from backend');
+export const getMovieImages = ({ queryKey }) => {
+  const [, idPart] = queryKey;
+  const { id } = idPart;
+  return fetch(
+    `${BASE_URL}/movies/tmdb/movie/${id}/images`
+  ).then( (response) => {
+    if (!response.ok) {
+      return response.json().then((error) => {
+        throw new Error(error.status_message || "Something went wrong");
+      });
+    }
     return response.json();
+  })
+  .catch((error) => {
+    throw error
+ });
 };
 
 // Fetch upcoming movies
@@ -56,12 +91,48 @@ export const getTopRatedMovies = async (page = 1) => {
     return response.json();
 };
 
-// Fetch movie reviews
 export const getMovieReviews = async (id) => {
-    const response = await fetch(`${BASE_URL}/reviews/tmdb/movie/${id}/reviews`);
-    if (!response.ok) throw new Error('Failed to fetch movie reviews from backend');
-    return response.json();
+  if (!id || typeof id !== 'string' && typeof id !== 'number') {
+      throw new Error(`Invalid ID: ${id}. Expected a string or number.`);
+  }
+
+  const url = `${BASE_URL}/reviews/tmdb/movie/${id}/reviews`;
+  console.log(`Fetching movie reviews from backend: ${url}`); // 调试日志
+
+  try {
+      const response = await fetch(url);
+      if (!response.ok) {
+          const error = await response.json();
+          throw new Error(error.message || 'Failed to fetch movie reviews from backend');
+      }
+      return await response.json();
+  } catch (error) {
+      console.error('Error fetching movie reviews:', error.message);
+      throw error;
+  }
 };
+
+// Fetch movie reviews
+  // export const getMovieReviews = ({ queryKey }) => {
+  //   const [, idPart] = queryKey;
+  //   const { id } = idPart;
+  //   return fetch(
+  //     `https://api.themoviedb.org/3/movie/${id}/reviews?api_key=${process.env.REACT_APP_TMDB_KEY}`
+  //   ).then( (response) => {
+  //     if (!response.ok) {
+  //       return response.json().then((error) => {
+  //         throw new Error(error.status_message || "Something went wrong");
+  //       });
+  //     }
+  //     return response.json();
+  //   })
+  //   .catch((error) => {
+  //     throw error
+  //  });
+  // };
+
+
+
 
 
 
@@ -84,24 +155,24 @@ export const getMovieReviews = async (id) => {
 // };
 
   
-//   export const getMovie = (args) => {
-//     //console.log(args)
-//     const [, idPart] = args.queryKey;
-//     const { id } = idPart;
-//     return fetch(
-//       `https://api.themoviedb.org/3/movie/${id}?api_key=${process.env.REACT_APP_TMDB_KEY}`
-//     ).then((response) => {
-//       if (!response.ok) {
-//         return response.json().then((error) => {
-//           throw new Error(error.status_message || "Something went wrong");
-//         });
-//       }
-//       return response.json();
-//     })
-//     .catch((error) => {
-//       throw error
-//    });
-//   };
+  // export const getMovie = (args) => {
+  //   //console.log(args)
+  //   const [, idPart] = args.queryKey;
+  //   const { id } = idPart;
+  //   return fetch(
+  //     `https://api.themoviedb.org/3/movie/${id}?api_key=${process.env.REACT_APP_TMDB_KEY}`
+  //   ).then((response) => {
+  //     if (!response.ok) {
+  //       return response.json().then((error) => {
+  //         throw new Error(error.status_message || "Something went wrong");
+  //       });
+  //     }
+  //     return response.json();
+  //   })
+  //   .catch((error) => {
+  //     throw error
+  //  });
+  // };
   
 //   export const getGenres = () => {
 //     return fetch(
@@ -121,41 +192,9 @@ export const getMovieReviews = async (id) => {
 //    });
 //   };
   
-//   export const getMovieImages = ({ queryKey }) => {
-//     const [, idPart] = queryKey;
-//     const { id } = idPart;
-//     return fetch(
-//       `https://api.themoviedb.org/3/movie/${id}/images?api_key=${process.env.REACT_APP_TMDB_KEY}`
-//     ).then( (response) => {
-//       if (!response.ok) {
-//         return response.json().then((error) => {
-//           throw new Error(error.status_message || "Something went wrong");
-//         });
-//       }
-//       return response.json();
-//     })
-//     .catch((error) => {
-//       throw error
-//    });
-//   };
 
-//   export const getMovieReviews = ({ queryKey }) => {
-//     const [, idPart] = queryKey;
-//     const { id } = idPart;
-//     return fetch(
-//       `https://api.themoviedb.org/3/movie/${id}/reviews?api_key=${process.env.REACT_APP_TMDB_KEY}`
-//     ).then( (response) => {
-//       if (!response.ok) {
-//         return response.json().then((error) => {
-//           throw new Error(error.status_message || "Something went wrong");
-//         });
-//       }
-//       return response.json();
-//     })
-//     .catch((error) => {
-//       throw error
-//    });
-//   };
+
+
 
 //   export const getUpcomingMovies = (page=1) => {
 //     return fetch(

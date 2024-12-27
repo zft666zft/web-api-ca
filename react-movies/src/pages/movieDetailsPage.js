@@ -8,12 +8,11 @@ import Spinner from '../components/spinner';
 
 
 const MoviePage = () => {
-  const { id } = useParams(); // 获取当前电影的 ID
+  const { id } = useParams(); 
   const { data: movie, error, isLoading, isError } = useQuery(
-    ["movie", { id: id }],
-    getMovie
-  );
-
+    ["movie", id], 
+    () => getMovie(id) // 确保 getMovie 接收的是数字或字符串
+);
   if (isLoading) {
     return <Spinner />;
   }

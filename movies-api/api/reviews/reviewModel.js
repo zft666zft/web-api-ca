@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 const Schema = mongoose.Schema;
 
-// 定义 reviews 集合的 schema
+
 const ReviewSchema = new Schema({
     movieId: {
         type: Number,
