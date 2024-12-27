@@ -2,22 +2,14 @@ import movieModel from './movieModel';
 import asyncHandler from 'express-async-handler';
 import express from 'express';
 import {
-    getUpcomingMovies,
     getGenres,
     getMovies,
     getMovie,
+    getUpcomingMovies,
     getTrendingMovies,
-    getMovieRecommendations,
-    getSimilarMovies,
-    getMovieCredits,
-    getMovieCast,
-    getActorMovies,
     getHotMovies,
     getTopRatedMovies,
-    getActorDetails,
-    getMovieVideos,
     getMovieImages,
-    getMovieReviews
   } from '../tmdb-api';
   
 
@@ -247,65 +239,6 @@ router.get('/tmdb/movie/:id/images', asyncHandler(async (req, res) => {
     const { id } = req.params;
     const images = await getMovieImages(id);
     res.status(200).json(images);
-}));
-
-//Get movie reviews from TMDB
-router.get('/tmdb/movie/:id/reviews', asyncHandler(async (req, res) => {
-    const { id } = req.params;
-    const reviews = await getMovieReviews(id);
-    res.status(200).json(reviews);
-}));
-
-
-//Get movie recommendations from TMDB
-router.get('/tmdb/movie/:id/recommendations', asyncHandler(async (req, res) => {
-    const { id } = req.params;
-    const { page = 1 } = req.query;
-    const recommendations = await getMovieRecommendations(id, page);
-    res.status(200).json(recommendations);
-}));
-
-//Get similar movies from TMDB
-router.get('/tmdb/movie/:id/similar', asyncHandler(async (req, res) => {
-    const { id } = req.params;
-    const { page = 1 } = req.query;
-    const similarMovies = await getSimilarMovies(id, page);
-    res.status(200).json(similarMovies);
-}));
-
-//Get movie videos from TMDB
-router.get('/tmdb/movie/:id/videos', asyncHandler(async (req, res) => {
-    const { id } = req.params;
-    const videos = await getMovieVideos(id);
-    res.status(200).json(videos);
-}));
-
-//Get movie credits (cast and crew) from TMDB
-router.get('/tmdb/movie/:id/credits', asyncHandler(async (req, res) => {
-    const { id } = req.params;
-    const credits = await getMovieCredits(id);
-    res.status(200).json(credits);
-}));
-
-//Get movie cast from TMDB
-router.get('/tmdb/movie/:id/cast', asyncHandler(async (req, res) => {
-    const { id } = req.params;
-    const cast = await getMovieCast(id);
-    res.status(200).json(cast);
-}));
-
-//Get actor details from TMDB
-router.get('/tmdb/actor/:id', asyncHandler(async (req, res) => {
-    const { id } = req.params;
-    const actorDetails = await getActorDetails(id);
-    res.status(200).json(actorDetails);
-}));
-
-//Get actor movies from TMDB
-router.get('/tmdb/actor/:id/movies', asyncHandler(async (req, res) => {
-    const { id } = req.params;
-    const actorMovies = await getActorMovies(id);
-    res.status(200).json(actorMovies);
 }));
 
 

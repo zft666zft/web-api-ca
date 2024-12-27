@@ -17,9 +17,9 @@ const port = process.env.PORT;
 app.use(cors());
 app.use(express.json());
 app.use('/api/users', usersRouter);
-app.use('/api/movies', authenticate, moviesRouter);
-app.use('/api/actors', authenticate, actorsRouter);
-app.use('/api/reviews', authenticate,reviewsRouter);
+app.use('/api/movies', moviesRouter);
+app.use('/api/actors', actorsRouter);
+app.use('/api/reviews',reviewsRouter);
 app.use(defaultErrHandler);
 
 app.listen(port, () => {
