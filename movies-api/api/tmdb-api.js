@@ -137,30 +137,6 @@ export const getTopRatedMovies = async (page = 1) => {
     }
 };
 
-
-
-
-//reviews
-
-// Fetch movie reviews
-export const getMovieReviews = async (id) => {
-    try {
-        const response = await fetch(
-            `${API_BASE_URL}/movie/${id}/reviews?api_key=${API_KEY}`
-        );
-        if (!response.ok) {
-            const error = await response.json();
-            throw new Error(error.status_message || 'Failed to fetch movie reviews.');
-        }
-        return await response.json();
-    } catch (error) {
-        throw error;
-    }
-};
-
-
-
-
 // Fetch movie recommendations
 export const getMovieRecommendations = async (movieId, page = 1) => {
     try {
@@ -244,6 +220,32 @@ export const getMovieVideos = async (movieId) => {
 
 
 
+//reviews
+
+// Fetch movie reviews
+export const getMovieReviews = async (id) => {
+    try {
+        const response = await fetch(
+            `${API_BASE_URL}/movie/${id}/reviews?api_key=${API_KEY}`
+        );
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.status_message || 'Failed to fetch movie reviews.');
+        }
+        return await response.json();
+    } catch (error) {
+        throw error;
+    }
+};
+
+
+
+
+
+
+
+
+
 //Actor
 
 // Fetch actor details
@@ -276,6 +278,8 @@ export const getActorMovies = async (actorId) => {
         throw error;
     }
 };
+
+
 // Fetch actors by name
 export const getActorsByName = async (name) => {
     try {

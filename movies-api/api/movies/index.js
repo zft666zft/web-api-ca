@@ -10,6 +10,11 @@ import {
     getHotMovies,
     getTopRatedMovies,
     getMovieImages,
+    getMovieRecommendations, 
+    getSimilarMovies,
+    getMovieCast, 
+    getMovieCredits, 
+    getMovieVideos
   } from '../tmdb-api';
   
 
@@ -73,6 +78,62 @@ router.get('/tmdb/movie/:id/images', asyncHandler(async (req, res) => {
     res.status(200).json(images);
 }));
 
+// Route to fetch movie recommendations
+router.get('/tmdb/recommendations/:movieId', asyncHandler(async (req, res) => {
+    const { movieId } = req.params;
+    const { page = 1 } = req.query;
+    try {
+        const recommendations = await getMovieRecommendations(movieId, page);
+        res.status(200).json(recommendations);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}));
+
+// Route to fetch similar movies
+router.get('/tmdb/similar/:movieId', asyncHandler(async (req, res) => {
+    const { movieId } = req.params;
+    const { page = 1 } = req.query;
+    try {
+        const similarMovies = await getSimilarMovies(movieId, page);
+        res.status(200).json(similarMovies);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}));
+
+// Route to fetch movie cast
+router.get('/tmdb/cast/:movieId', asyncHandler(async (req, res) => {
+    const { movieId } = req.params;
+    try {
+        const cast = await getMovieCast(movieId);
+        res.status(200).json(cast);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}));
+
+// Route to fetch movie credits (cast and crew)
+router.get('/tmdb/credits/:movieId', asyncHandler(async (req, res) => {
+    const { movieId } = req.params;
+    try {
+        const credits = await getMovieCredits(movieId);
+        res.status(200).json(credits);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}));
+
+// Route to fetch movie videos
+router.get('/tmdb/videos/:movieId', asyncHandler(async (req, res) => {
+    const { movieId } = req.params;
+    try {
+        const videos = await getMovieVideos(movieId);
+        res.status(200).json(videos);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}));
 
 
 // //Get from MongoDB

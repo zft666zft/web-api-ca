@@ -93,6 +93,56 @@ export const getTopRatedMovies = async (page = 1) => {
     return response.json();
 };
 
+// Fetch movie recommendations from backend
+export const getMovieRecommendations = async (movieId, page = 1) => {
+  const response = await fetch(`${BASE_URL}/movies/tmdb/recommendations/${movieId}?page=${page}`);
+  if (!response.ok) throw new Error('Failed to fetch movie recommendations from backend');
+  return response.json();
+};
+
+// Fetch similar movies from backend
+export const getSimilarMovies = async (movieId, page = 1) => {
+  const response = await fetch(`${BASE_URL}/movies/tmdb/similar/${movieId}?page=${page}`);
+  if (!response.ok) throw new Error('Failed to fetch similar movies from backend');
+  return response.json();
+};
+
+// export const getMovieRecommendations = (movieId,page=1) => {
+//   return fetch(
+//     `https://api.themoviedb.org/3/movie/${movieId}/recommendations?api_key=${process.env.REACT_APP_TMDB_KEY}&page=${page}`
+//   )
+//     .then((response) => {
+//       if (!response.ok) {
+//         return response.json().then((error) => {
+//           throw new Error(error.status_message || "Something went wrong");
+//         });
+//       }
+//       return response.json();
+//     })
+//     .catch((error) => {
+//       throw error;
+//     });
+// };
+
+// export const getSimilarMovies = (movieId,page=1) => {
+//   return fetch(
+//     `https://api.themoviedb.org/3/movie/${movieId}/similar?api_key=${process.env.REACT_APP_TMDB_KEY}&page=${page}`
+//   )
+//     .then((response) => {
+//       if (!response.ok) {
+//         return response.json().then((error) => {
+//           throw new Error(error.status_message || "Something went wrong");
+//         });
+//       }
+//       return response.json();
+//     })
+//     .catch((error) => {
+//       throw error;
+//     });
+// };
+
+
+
 // Fetch movie reviews
 // export const getMovieReviews = (movieId) => {
 //   console.log('Fetching reviews for movie ID:', movieId);  // 确认传入的 ID
@@ -267,57 +317,97 @@ export const getTopRatedMovies = async (page = 1) => {
 //   };
   
   
-  export const getMovieRecommendations = (movieId,page=1) => {
-    return fetch(
-      `https://api.themoviedb.org/3/movie/${movieId}/recommendations?api_key=${process.env.REACT_APP_TMDB_KEY}&page=${page}`
-    )
-      .then((response) => {
-        if (!response.ok) {
-          return response.json().then((error) => {
-            throw new Error(error.status_message || "Something went wrong");
-          });
-        }
-        return response.json();
-      })
-      .catch((error) => {
-        throw error;
-      });
-  };
-  
-  export const getSimilarMovies = (movieId,page=1) => {
-    return fetch(
-      `https://api.themoviedb.org/3/movie/${movieId}/similar?api_key=${process.env.REACT_APP_TMDB_KEY}&page=${page}`
-    )
-      .then((response) => {
-        if (!response.ok) {
-          return response.json().then((error) => {
-            throw new Error(error.status_message || "Something went wrong");
-          });
-        }
-        return response.json();
-      })
-      .catch((error) => {
-        throw error;
-      });
-  };
 
-  // 获取电影的演员列表
-export const getMovieCast = (movieId) => {
-  return fetch(
-    `https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=${process.env.REACT_APP_TMDB_KEY}`
-  )
-    .then((response) => {
-      if (!response.ok) {
-        return response.json().then((error) => {
-          throw new Error(error.status_message || "Something went wrong");
-        });
-      }
-      return response.json();
-    })
-    .catch((error) => {
-      throw error;
-    });
+
+//   // 获取电影的演员列表
+// export const getMovieCast = (movieId) => {
+//   return fetch(
+//     `https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=${process.env.REACT_APP_TMDB_KEY}`
+//   )
+//     .then((response) => {
+//       if (!response.ok) {
+//         return response.json().then((error) => {
+//           throw new Error(error.status_message || "Something went wrong");
+//         });
+//       }
+//       return response.json();
+//     })
+//     .catch((error) => {
+//       throw error;
+//     });
+// };
+
+
+
+
+
+// // 获取电影的演员和制作人员
+// export const getMovieCredits = (movieId) => {
+//   return fetch(
+//     `https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=${process.env.REACT_APP_TMDB_KEY}`
+//   )
+//     .then((response) => {
+//       if (!response.ok) {
+//         return response.json().then((error) => {
+//           throw new Error(error.status_message || "Something went wrong");
+//         });
+//       }
+//       return response.json();
+//     })
+//     .catch((error) => {
+//       throw error;
+//     });
+// };
+
+
+// export const getMovieVideos = (movieId) => {
+//   return fetch(
+//     `https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=${process.env.REACT_APP_TMDB_KEY}`
+//   )
+//     .then((response) => {
+//       if (!response.ok) {
+//         return response.json().then((error) => {
+//           throw new Error(error.status_message || "Something went wrong");
+//         });
+//       }
+//       return response.json();
+//     })
+//     .catch((error) => {
+//       throw error;
+//     });
+// };
+
+
+// Fetch movie cast from backend
+export const getMovieCast = async (movieId) => {
+  const response = await fetch(`${BASE_URL}/movies/tmdb/cast/${movieId}`);
+  if (!response.ok) {
+    throw new Error('Failed to fetch movie cast from backend');
+  }
+  return response.json();
 };
+
+// Fetch movie credits (cast and crew) from backend
+export const getMovieCredits = async (movieId) => {
+  const response = await fetch(`${BASE_URL}/movies/tmdb/credits/${movieId}`);
+  if (!response.ok) {
+    throw new Error('Failed to fetch movie credits from backend');
+  }
+  return response.json();
+};
+
+// Fetch movie videos from backend
+export const getMovieVideos = async (movieId) => {
+  const response = await fetch(`${BASE_URL}/movies/tmdb/videos/${movieId}`);
+  if (!response.ok) {
+    throw new Error('Failed to fetch movie videos from backend');
+  }
+  return response.json();
+};
+
+
+
+
 
 export const getActorMovies = (actorId) => {
   return fetch(
@@ -337,47 +427,9 @@ export const getActorMovies = (actorId) => {
 };
 
 
-
-
-
-// 获取电影的演员和制作人员
-export const getMovieCredits = (movieId) => {
-  return fetch(
-    `https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=${process.env.REACT_APP_TMDB_KEY}`
-  )
-    .then((response) => {
-      if (!response.ok) {
-        return response.json().then((error) => {
-          throw new Error(error.status_message || "Something went wrong");
-        });
-      }
-      return response.json();
-    })
-    .catch((error) => {
-      throw error;
-    });
-};
-
 export const getActorDetails = (actorId) => {
   return fetch(
     `https://api.themoviedb.org/3/person/${actorId}?api_key=${process.env.REACT_APP_TMDB_KEY}&language=en-US`
-  )
-    .then((response) => {
-      if (!response.ok) {
-        return response.json().then((error) => {
-          throw new Error(error.status_message || "Something went wrong");
-        });
-      }
-      return response.json();
-    })
-    .catch((error) => {
-      throw error;
-    });
-};
-
-export const getMovieVideos = (movieId) => {
-  return fetch(
-    `https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=${process.env.REACT_APP_TMDB_KEY}`
   )
     .then((response) => {
       if (!response.ok) {

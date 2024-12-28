@@ -9,6 +9,83 @@ import { getActorDetails,
          getActorsByPopularityThreshold 
         } from '../tmdb-api'; 
 const router = express.Router();
+//TMDB
+
+//Get cast details
+router.get('/tmdb/actor/:id', asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const actorDetails = await getActorDetails(id);
+    res.status(200).json(actorDetails);
+}));
+
+//Get films with actors in them
+router.get('/tmdb/actor/:id/movies', asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const actorMovies = await getActorMovies(id);
+    res.status(200).json(actorMovies);
+}));
+
+//Get actors by name
+router.get('/tmdb/name/:name', asyncHandler(async (req, res) => {
+    const { name } = req.params;
+    const actors = await getActorsByName(name);
+    res.status(200).json(actors);
+}));
+// Get actors by gender
+router.get('/tmdb/gender/:gender', asyncHandler(async (req, res) => {
+    const { gender } = req.params;
+    const genderNormalized = gender.toLowerCase();
+    const genderCode = genderNormalized === 'male' ? 2 : genderNormalized === 'female' ? 1 : null;
+    if (!genderCode) {
+        return res.status(400).json({ message: "Invalid gender. Use 'male' or 'female'." });
+    }
+    const actors = await getActorsByGender(genderCode);
+    const filteredActors = actors.results.filter(actor => actor.gender === genderCode);
+    res.status(200).json({
+        total_results: filteredActors.length,
+        results: filteredActors
+    });
+}));
+// Get actors based on popularity range
+router.get('/tmdb/popularity/:min/:max', asyncHandler(async (req, res) => {
+    const { min, max } = req.params; 
+    if (!min || !max || isNaN(min) || isNaN(max)) {
+        return res.status(400).json({ message: "Both 'min' and 'max' popularity values are required and must be numbers." });
+    }
+    const actors = await getActorsByPopularityRange(min, max);
+    if (actors.results.length > 0) {
+        res.status(200).json({
+            total_results: actors.results.length,
+            results: actors.results
+        });
+    } else {
+        res.status(404).json({
+            message: `No actors found with popularity between ${min} and ${max}.`,
+            status_code: 404
+        });
+    }
+}));
+//Get actors whose popularity is above a certain value 
+router.get('/tmdb/popularity/:threshold', asyncHandler(async (req, res) => {
+    const { threshold } = req.params;
+    if (!threshold || isNaN(threshold)) {
+        return res.status(400).json({ message: "'threshold' value is required and must be a number." });
+    }
+    const actors = await getActorsByPopularityThreshold(threshold);
+    if (actors.results.length > 0) {
+        res.status(200).json({
+            total_results: actors.results.length,
+            results: actors.results
+        });
+    } else {
+        res.status(404).json({
+            message: `No actors found with popularity above ${threshold}.`,
+            status_code: 404
+        });
+    }
+}));
+
+
 //MongoDB
 //Get all actors (Pagination)
 router.get('/', asyncHandler(async (req, res) => {
@@ -100,76 +177,10 @@ router.get('/popularity/:threshold', asyncHandler(async (req, res) => {
         });
     }
 }));
-//TMDB
-//Get cast details
-router.get('/tmdb/actor/:id', asyncHandler(async (req, res) => {
-    const { id } = req.params;
-    const actorDetails = await getActorDetails(id);
-    res.status(200).json(actorDetails);
-}));
-//Get films with actors in them
-router.get('/tmdb/actor/:id/movies', asyncHandler(async (req, res) => {
-    const { id } = req.params;
-    const actorMovies = await getActorMovies(id);
-    res.status(200).json(actorMovies);
-}));
-//Get actors by name
-router.get('/tmdb/name/:name', asyncHandler(async (req, res) => {
-    const { name } = req.params;
-    const actors = await getActorsByName(name);
-    res.status(200).json(actors);
-}));
-// Get actors by gender
-router.get('/tmdb/gender/:gender', asyncHandler(async (req, res) => {
-    const { gender } = req.params;
-    const genderNormalized = gender.toLowerCase();
-    const genderCode = genderNormalized === 'male' ? 2 : genderNormalized === 'female' ? 1 : null;
-    if (!genderCode) {
-        return res.status(400).json({ message: "Invalid gender. Use 'male' or 'female'." });
-    }
-    const actors = await getActorsByGender(genderCode);
-    const filteredActors = actors.results.filter(actor => actor.gender === genderCode);
-    res.status(200).json({
-        total_results: filteredActors.length,
-        results: filteredActors
-    });
-}));
-// Get actors based on popularity range
-router.get('/tmdb/popularity/:min/:max', asyncHandler(async (req, res) => {
-    const { min, max } = req.params; 
-    if (!min || !max || isNaN(min) || isNaN(max)) {
-        return res.status(400).json({ message: "Both 'min' and 'max' popularity values are required and must be numbers." });
-    }
-    const actors = await getActorsByPopularityRange(min, max);
-    if (actors.results.length > 0) {
-        res.status(200).json({
-            total_results: actors.results.length,
-            results: actors.results
-        });
-    } else {
-        res.status(404).json({
-            message: `No actors found with popularity between ${min} and ${max}.`,
-            status_code: 404
-        });
-    }
-}));
-//Get actors whose popularity is above a certain value 
-router.get('/tmdb/popularity/:threshold', asyncHandler(async (req, res) => {
-    const { threshold } = req.params;
-    if (!threshold || isNaN(threshold)) {
-        return res.status(400).json({ message: "'threshold' value is required and must be a number." });
-    }
-    const actors = await getActorsByPopularityThreshold(threshold);
-    if (actors.results.length > 0) {
-        res.status(200).json({
-            total_results: actors.results.length,
-            results: actors.results
-        });
-    } else {
-        res.status(404).json({
-            message: `No actors found with popularity above ${threshold}.`,
-            status_code: 404
-        });
-    }
-}));
+
+
+
+
+
+
 export default router;
