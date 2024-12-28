@@ -11,9 +11,7 @@ const SignUpPage = props => {
   const [registered, setRegistered] = useState(false);
 
   const register = () => {
-    setError("");  // Clear error messages on new submission
-
- 
+    setError("");  
     if (!userName.trim()) {
       setError("Username cannot be empty");
       return;
@@ -27,6 +25,11 @@ const SignUpPage = props => {
       return;
     }
 
+    if (password !== passwordAgain) {
+        setError("Passwords do not match");
+        return;
+      }
+
     // Validate password complexity
     let passwordRegEx = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
     if (!passwordRegEx.test(password)) {
@@ -34,19 +37,14 @@ const SignUpPage = props => {
       return;
     }
 
-    // Check if passwords match
-    if (password !== passwordAgain) {
-      setError("Passwords do not match");
-      return;
-    }
+   
 
-    // Assume context.register() is an asynchronous function that handles the registration
     context.register(userName, password)
       .then(() => {
         setRegistered(true);
       })
       .catch(error => {
-        setError("Registration failed. Please try again."); 
+        setError("Registration failed. Please try again.");
       });
   };
 
@@ -55,21 +53,22 @@ const SignUpPage = props => {
   }
 
   return (
-    <>
-      <h2>SignUp page</h2>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      <p>You must register a username and password to log in </p>
-      <input value={userName} placeholder="user name" onChange={e => {
-        setUserName(e.target.value); setError("");  // Clear error when user changes input
-      }}></input><br />
-      <input value={password} type="password" placeholder="password" onChange={e => {
-        setPassword(e.target.value); setError("");  // Clear error when user changes input
-      }}></input><br />
-      <input value={passwordAgain} type="password" placeholder="password again" onChange={e => {
-        setPasswordAgain(e.target.value); setError("");  // Clear error when user changes input
-      }}></input><br />
-      <button onClick={register}>Register</button>
-    </>
+    <div className="auth-form">
+      <h2>Sign Up Page</h2>
+      {error && <p className="error-message">{error}</p>}
+      <div className="form-group">
+        <input className="form-control" placeholder="User Name" value={userName} onChange={e => {
+          setUserName(e.target.value); setError("");  // Clear error when user changes input
+        }} />
+        <input className="form-control" type="password" placeholder="Password" value={password} onChange={e => {
+          setPassword(e.target.value); setError("");  // Clear error when user changes input
+        }} />
+        <input className="form-control" type="password" placeholder="Confirm Password" value={passwordAgain} onChange={e => {
+          setPasswordAgain(e.target.value); setError("");  // Clear error when user changes input
+        }} />
+        <button className="button-primary" onClick={register}>Register</button>
+      </div>
+    </div>
   );
 };
 
