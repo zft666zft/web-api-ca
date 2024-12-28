@@ -91,45 +91,58 @@ export const getTopRatedMovies = async (page = 1) => {
     return response.json();
 };
 
-export const getMovieReviews = async (id) => {
-  if (!id || typeof id !== 'string' && typeof id !== 'number') {
-      throw new Error(`Invalid ID: ${id}. Expected a string or number.`);
-  }
-
-  const url = `${BASE_URL}/reviews/tmdb/movie/${id}/reviews`;
-  console.log(`Fetching movie reviews from backend: ${url}`); // 调试日志
-
-  try {
-      const response = await fetch(url);
-      if (!response.ok) {
-          const error = await response.json();
-          throw new Error(error.message || 'Failed to fetch movie reviews from backend');
-      }
-      return await response.json();
-  } catch (error) {
-      console.error('Error fetching movie reviews:', error.message);
-      throw error;
-  }
-};
-
 // Fetch movie reviews
-  // export const getMovieReviews = ({ queryKey }) => {
-  //   const [, idPart] = queryKey;
-  //   const { id } = idPart;
-  //   return fetch(
-  //     `https://api.themoviedb.org/3/movie/${id}/reviews?api_key=${process.env.REACT_APP_TMDB_KEY}`
-  //   ).then( (response) => {
-  //     if (!response.ok) {
-  //       return response.json().then((error) => {
-  //         throw new Error(error.status_message || "Something went wrong");
-  //       });
-  //     }
-  //     return response.json();
-  //   })
-  //   .catch((error) => {
-  //     throw error
-  //  });
-  // };
+// export const getMovieReviews = ({ queryKey }) => {
+//   const [, idPart] = queryKey;
+//   const { id } = idPart;
+//   const url = `${BASE_URL}/reviews/tmdb/movie/${id}`;
+  
+//   return fetch(url)
+//     .then((response) => {
+//       if (!response.ok) {
+//         return response.json().then((error) => {
+//           throw new Error(error.message || "Something went wrong with the backend");
+//         });
+//       }
+//       return response.json(); // 返回 JSON 数据
+//     })
+//     .catch((error) => {
+//       console.error("Fetch error:", error);
+//       throw error;
+//     });
+// };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  export const getMovieReviews = ({ queryKey }) => {
+    const [, idPart] = queryKey;
+    const { id } = idPart;
+    return fetch(
+      `https://api.themoviedb.org/3/movie/${id}/reviews?api_key=${process.env.REACT_APP_TMDB_KEY}`
+    ).then( (response) => {
+      if (!response.ok) {
+        return response.json().then((error) => {
+          throw new Error(error.status_message || "Something went wrong");
+        });
+      }
+      return response.json();
+    })
+    .catch((error) => {
+      throw error
+   });
+  };
 
 
 

@@ -157,3 +157,90 @@ export const getMovieReviews = async (id) => {
         throw error;
     }
 };
+
+
+
+
+// Fetch movie recommendations
+export const getMovieRecommendations = async (movieId, page = 1) => {
+    try {
+        const response = await fetch(
+            `${API_BASE_URL}/movie/${movieId}/recommendations?api_key=${API_KEY}&page=${page}`
+        );
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.status_message || 'Failed to fetch movie recommendations.');
+        }
+        return await response.json();
+    } catch (error) {
+        throw error;
+    }
+};
+
+// Fetch similar movies
+export const getSimilarMovies = async (movieId, page = 1) => {
+    try {
+        const response = await fetch(
+            `${API_BASE_URL}/movie/${movieId}/similar?api_key=${API_KEY}&page=${page}`
+        );
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.status_message || 'Failed to fetch similar movies.');
+        }
+        return await response.json();
+    } catch (error) {
+        throw error;
+    }
+};
+
+// Fetch movie cast
+export const getMovieCast = async (movieId) => {
+    try {
+        const response = await fetch(
+            `${API_BASE_URL}/movie/${movieId}/credits?api_key=${API_KEY}`
+        );
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.status_message || 'Failed to fetch movie cast.');
+        }
+        return await response.json();
+    } catch (error) {
+        throw error;
+    }
+};
+
+// Fetch movie credits (cast and crew)
+export const getMovieCredits = async (movieId) => {
+    try {
+        const response = await fetch(
+            `https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=${process.env.TMDB_KEY}`
+        );
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.status_message || "Failed to fetch movie credits.");
+        }
+        return await response.json();
+    } catch (error) {
+        throw error;
+    }
+};
+
+
+// Fetch movie videos
+export const getMovieVideos = async (movieId) => {
+    try {
+        const response = await fetch(
+            `${API_BASE_URL}/movie/${movieId}/videos?api_key=${API_KEY}`
+        );
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.status_message || 'Failed to fetch movie videos.');
+        }
+        return await response.json();
+    } catch (error) {
+        throw error;
+    }
+};
+
+
+
