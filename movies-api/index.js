@@ -6,6 +6,7 @@ import defaultErrHandler from './errHandler'
 import usersRouter from './api/users';
 import moviesRouter from './api/movies';
 import reviewsRouter from './api/reviews';
+import actorsRouter from './api/actors';
 import authenticate from './authenticate';
 
 dotenv.config();
@@ -13,14 +14,12 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT; 
 
-app.use(cors({
-  origin: 'http://localhost:3000', 
-  credentials: true, 
-}));
+app.use(cors());
 app.use(express.json());
 app.use('/api/users', usersRouter);
 app.use('/api/movies', moviesRouter);
 app.use('/api/reviews',reviewsRouter);
+app.use('/api/actors', authenticate, actorsRouter);
 app.use(defaultErrHandler);
 
 app.listen(port, () => {

@@ -244,3 +244,95 @@ export const getMovieVideos = async (movieId) => {
 
 
 
+//Actor
+
+// Fetch actor details
+export const getActorDetails = async (actorId) => {
+    try {
+        const response = await fetch(
+            `${API_BASE_URL}/person/${actorId}?api_key=${API_KEY}&language=en-US`
+        );
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.status_message || 'Failed to fetch actor details.');
+        }
+        return await response.json();
+    } catch (error) {
+        throw error;
+    }
+};
+// Fetch actor movies
+export const getActorMovies = async (actorId) => {
+    try {
+        const response = await fetch(
+            `${API_BASE_URL}/person/${actorId}/movie_credits?api_key=${API_KEY}`
+        );
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.status_message || 'Failed to fetch actor movies.');
+        }
+        return await response.json();
+    } catch (error) {
+        throw error;
+    }
+};
+// Fetch actors by name
+export const getActorsByName = async (name) => {
+    try {
+        const response = await fetch(
+            `${API_BASE_URL}/search/person?api_key=${API_KEY}&language=en-US&query=${encodeURIComponent(name)}`
+        );
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.status_message || 'Failed to fetch actors by name.');
+        }
+        return await response.json();
+    } catch (error) {
+        throw error;
+    }
+};
+// Fetch actors by gender
+export const getActorsByGender = async (gender) => {
+    try {
+        const response = await fetch(
+            `${API_BASE_URL}/discover/person?api_key=${API_KEY}&language=en-US&with_gender=${gender}`
+        );
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.status_message || 'Failed to fetch actors by gender.');
+        }
+        return await response.json();
+    } catch (error) {
+        throw error;
+    }
+};
+// Fetch actors with popularity range
+export const getActorsByPopularityRange = async (minPopularity, maxPopularity) => {
+    try {
+        const response = await fetch(
+            `${API_BASE_URL}/discover/person?api_key=${API_KEY}&language=en-US&sort_by=popularity.desc&vote_average.gte=${minPopularity}&vote_average.lte=${maxPopularity}`
+        );
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.status_message || 'Failed to fetch actors by popularity range.');
+        }
+        return await response.json();
+    } catch (error) {
+        throw error;
+    }
+};
+// Fetch actors with popularity above a threshold
+export const getActorsByPopularityThreshold = async (popularity) => {
+    try {
+        const response = await fetch(
+            `${API_BASE_URL}/discover/person?api_key=${API_KEY}&language=en-US&sort_by=popularity.desc&vote_average.gte=${popularity}`
+        );
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.status_message || 'Failed to fetch actors by popularity threshold.');
+        }
+        return await response.json();
+    } catch (error) {
+        throw error;
+    }
+};

@@ -9,16 +9,16 @@ const router = express.Router();
 //TMDB
 
 // Fetch reviews for a specific movie from TMDB
-router.get('/tmdb/movie/:id', asyncHandler(async (req, res) => {
-    const { id } = req.params;
+router.get('/tmdb/movie/:movieId', asyncHandler(async (req, res) => {
+    const { movieId } = req.params;
     
-    const tmdbReviews = await getMovieReviews(id);
+    const tmdbReviews = await getMovieReviews(movieId);
 
     if (tmdbReviews.results.length > 0) {
         res.status(200).json(tmdbReviews.results);
     } else {
         res.status(404).json({
-            message: `No reviews found for movie with ID ${id} on TMDB.`,
+            message: `No reviews found for movie with ID ${movieId} on TMDB.`,
             status_code: 404
         });
     }

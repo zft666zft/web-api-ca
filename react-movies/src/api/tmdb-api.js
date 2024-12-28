@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 const BASE_URL = 'http://localhost:8080/api';
 
 // Fetch movies with pagination
@@ -92,34 +94,20 @@ export const getTopRatedMovies = async (page = 1) => {
 };
 
 // Fetch movie reviews
-// export const getMovieReviews = ({ queryKey }) => {
-//   const [, idPart] = queryKey;
-//   const { id } = idPart;
-//   const url = `${BASE_URL}/reviews/tmdb/movie/${id}`;
-  
-//   return fetch(url)
-//     .then((response) => {
-//       if (!response.ok) {
-//         return response.json().then((error) => {
-//           throw new Error(error.message || "Something went wrong with the backend");
-//         });
-//       }
-//       return response.json(); // 返回 JSON 数据
-//     })
-//     .catch((error) => {
-//       console.error("Fetch error:", error);
-//       throw error;
+// export const getMovieReviews = (movieId) => {
+//   console.log('Fetching reviews for movie ID:', movieId);  // 确认传入的 ID
+//   return axios.get(`${BASE_URL}/reviews/tmdb/movie/${movieId}`)
+//       .then(response => {
+//           console.log('API Response:', response.data);  // 查看 API 响应数据
+//           return response.data;
+//       })
+//       .catch(error => {
+//         const errorMsg = error.response ? error.response.data.message : error.message || "Something went wrong";
+//         console.error('Error fetching movie reviews:', errorMsg);
+//         throw new Error(errorMsg);
 //     });
+    
 // };
-
-
-
-
-
-
-
-
-
 
 
 
