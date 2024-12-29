@@ -26,37 +26,37 @@ router.get('/tmdb/movie/:movieId', asyncHandler(async (req, res) => {
 
 
 
-// //MongoDB
+//MongoDB
 
-// // Get all reviews for a specific movie from MongoDB
-// router.get('/movie/:movieId', asyncHandler(async (req, res) => {
-//     const { movieId } = req.params;
+// Get all reviews for a specific movie from MongoDB
+router.get('/movie/:movieId', asyncHandler(async (req, res) => {
+    const { movieId } = req.params;
 
-//     const reviews = await Review.find({ movieId }).sort({ createdAt: -1 });
+    const reviews = await Review.find({ movieId }).sort({ createdAt: -1 });
 
-//     if (reviews.length > 0) {
-//         res.status(200).json(reviews);
-//     } else {
-//         res.status(404).json({
-//             message: `No reviews found for movie with ID ${movieId}.`,
-//             status_code: 404
-//         });
-//     }
-// }));
+    if (reviews.length > 0) {
+        res.status(200).json(reviews);
+    } else {
+        res.status(404).json({
+            message: `No reviews found for movie with ID ${movieId}.`,
+            status_code: 404
+        });
+    }
+}));
 
-// // Add a new review
-// router.post('/movie/:movieId', asyncHandler(async (req, res) => {
-//     const { movieId } = req.params;
-//     const { author, content, rating } = req.body;
+// Add a new review
+router.post('/movie/:movieId', asyncHandler(async (req, res) => {
+    const { movieId } = req.params;
+    const { author, content, rating } = req.body;
 
-//     const newReview = await Review.create({
-//         movieId,
-//         author,
-//         content,
-//         rating
-//     });
+    const newReview = await Review.create({
+        movieId,
+        author,
+        content,
+        rating
+    });
 
-//     res.status(201).json(newReview);
-// }));
+    res.status(201).json(newReview);
+}));
 
 export default router;
